@@ -87,7 +87,7 @@
   <ItemGroup>
     <QtRcc Include="MainWindow.qrc" />
     <QtUic Include="MainWindow.ui" />
-    <QtMoc Include="MainWindow.h" />
+    <ClInclude Include="MainWindow.h" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="Grafika.ico" />
