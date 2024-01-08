@@ -6,7 +6,6 @@
 
 namespace Ui { class FunctionSettings; };
 
-
 class FunctionSettings :
     public QDialog
 {

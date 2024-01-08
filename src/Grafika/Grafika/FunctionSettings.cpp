@@ -7,7 +7,6 @@ FunctionSettings::FunctionSettings(QWidget * parent)
     , ui(std::make_unique <Ui::FunctionSettings>())
 {
     ui->setupUi(this);
-
 }
 
 FunctionSettings::~FunctionSettings() = default;
