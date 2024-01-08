@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "FunctionSettings.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -7,6 +8,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     connect(ui->actionExit, &QAction::triggered, [] { QApplication::exit(0); });
+    connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::CreateFunctionSettingsDialog);
 }
 
 MainWindow::~MainWindow() = default;
+
+void MainWindow::CreateFunctionSettingsDialog()
+{
+    auto * functionSettings = new FunctionSettings(this);
+    functionSettings->show();
+    ui->menuFunctions->addAction("Hello, World!", [=] { functionSettings->show(); });
+}
