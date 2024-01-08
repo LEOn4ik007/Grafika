@@ -11,6 +11,7 @@ FunctionSettings::FunctionSettings(QWidget * parent)
     ui->setupUi(this);
     ui->lineEditTitle->setText(tr("Function %1").arg(++nextNumber));
     connect(ui->lineEditTitle, &QLineEdit::textChanged, this, &FunctionSettings::titleChanged);
+    connect(ui->buttonRemove, &QAbstractButton::clicked, this, &QObject::deleteLater);
 }
 
 FunctionSettings::~FunctionSettings() = default;

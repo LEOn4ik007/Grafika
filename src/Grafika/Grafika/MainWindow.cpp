@@ -11,7 +11,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::CreateFunctionSettingsDialog);
 }
 
-MainWindow::~MainWindow() = default;
+MainWindow::~MainWindow()
+{
+    for (auto connection : connections)
+        disconnect(connection);
+}
 
 void MainWindow::CreateFunctionSettingsDialog()
 {
@@ -19,4 +23,6 @@ void MainWindow::CreateFunctionSettingsDialog()
     functionSettings->show();
     auto * action = ui->menuFunctions->addAction(functionSettings->GetTitle(), [=] { functionSettings->show(); });
     connect(functionSettings, &FunctionSettings::titleChanged, action, &QAction::setText);
+    auto connection = connect(functionSettings, &QObject::destroyed, this, [&, action] { ui->menuFunctions->removeAction(action); });
+    connections.push_back(connection);
 }
