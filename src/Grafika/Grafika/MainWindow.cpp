@@ -17,5 +17,6 @@ void MainWindow::CreateFunctionSettingsDialog()
 {
     auto * functionSettings = new FunctionSettings(this);
     functionSettings->show();
-    ui->menuFunctions->addAction("Hello, World!", [=] { functionSettings->show(); });
+    auto * action = ui->menuFunctions->addAction(functionSettings->GetTitle(), [=] { functionSettings->show(); });
+    connect(functionSettings, &FunctionSettings::titleChanged, action, &QAction::setText);
 }
