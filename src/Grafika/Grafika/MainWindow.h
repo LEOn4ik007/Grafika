@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <QtWidgets/QMainWindow>
 
@@ -17,4 +18,5 @@ private:
 
 private:
     std::unique_ptr<Ui::MainWindowClass> ui;
+    std::vector<QMetaObject::Connection> connections;
 };
