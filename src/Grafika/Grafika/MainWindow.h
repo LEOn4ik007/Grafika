@@ -15,6 +15,7 @@ public:
 
 private:
     void CreateFunctionSettingsDialog();
+    void ShowAboutDialog();
 
 private:
     std::unique_ptr<Ui::MainWindowClass> ui;
