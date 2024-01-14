@@ -20,6 +20,10 @@ public:
 
 public:
     QString GetTitle() const;
+    QPolygonF GetPoints() const;
+
+private:
+    double F(double x) const;
 
 private:
     std::unique_ptr<Ui::FunctionSettings> ui;

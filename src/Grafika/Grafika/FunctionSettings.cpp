@@ -33,3 +33,16 @@ QString FunctionSettings::GetTitle() const
 {
     return ui->lineEditTitle->text();
 }
+
+QPolygonF FunctionSettings::GetPoints() const
+{
+    QPolygonF points;
+    for (auto x = ui->doubleSpinBoxXMin->value(); x <= ui->doubleSpinBoxXMax->value(); x += ui->doubleSpinBoxDeltaX->value())
+        points << QPointF(x, F(x));
+    return points;
+}
+
+double FunctionSettings::F(double x) const
+{
+    return x;
+}
