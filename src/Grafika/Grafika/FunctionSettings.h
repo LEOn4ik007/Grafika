@@ -24,6 +24,7 @@ public:
 
 private:
     double F(double x) const;
+    void FillStyleCombobox();
 
 private:
     std::unique_ptr<Ui::FunctionSettings> ui;
