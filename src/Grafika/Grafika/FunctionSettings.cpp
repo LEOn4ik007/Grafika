@@ -2,6 +2,8 @@
 
 #include "ui_FunctionSettings.h"
 
+#include <QColorDialog>
+
 namespace
 {
     void SetupAutoMode(QCheckBox * checkBox, QWidget * widget)
@@ -22,10 +24,12 @@ FunctionSettings::FunctionSettings(QWidget * parent)
     connect(ui->buttonRemove, &QAbstractButton::clicked, this, &QObject::deleteLater);
     connect(ui->doubleSpinBoxXMax, &QDoubleSpinBox::valueChanged, ui->doubleSpinBoxXMin, &QDoubleSpinBox::setMaximum);
     connect(ui->doubleSpinBoxXMin, &QDoubleSpinBox::valueChanged, ui->doubleSpinBoxXMax, &QDoubleSpinBox::setMinimum);
+    connect(ui->pushButtonColor, &QAbstractButton::clicked, this, &FunctionSettings::ShowColorDialog);
     SetupAutoMode(ui->checkBoxXMaxAuto, ui-> doubleSpinBoxXMax);
     SetupAutoMode(ui->checkBoxXMinAuto, ui->doubleSpinBoxXMin);
     SetupAutoMode(ui->checkBoxDeltaXAuto, ui->doubleSpinBoxDeltaX);
     FillStyleCombobox();
+    SetColor(Qt::black);
 }
 
 FunctionSettings::~FunctionSettings() = default;
@@ -56,4 +60,18 @@ void FunctionSettings::FillStyleCombobox()
     ui->comboBoxStyle->addItem(tr("Dash dot line"), static_cast<int>(Qt::DashDotLine));
     ui->comboBoxStyle->addItem(tr("Dash dot dot line"), static_cast<int>(Qt::DashDotDotLine));
     ui->comboBoxStyle->setCurrentIndex(0);
+}
+
+void FunctionSettings::SetColor(const QColor & color)
+{
+    ui->pushButtonColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3)").arg(color.red()).arg(color.green()).arg(color.blue()));
+    curveColor = color;
+}
+
+void FunctionSettings::ShowColorDialog()
+{
+    QColorDialog dialog(this);
+    dialog.setCurrentColor(curveColor);
+    if (dialog.exec() == QDialog::Accepted)
+        SetColor(dialog.currentColor());
 }
