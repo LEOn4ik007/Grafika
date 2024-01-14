@@ -12,6 +12,8 @@ FunctionSettings::FunctionSettings(QWidget * parent)
     ui->lineEditTitle->setText(tr("Function %1").arg(++nextNumber));
     connect(ui->lineEditTitle, &QLineEdit::textChanged, this, &FunctionSettings::titleChanged);
     connect(ui->buttonRemove, &QAbstractButton::clicked, this, &QObject::deleteLater);
+    connect(ui->doubleSpinBoxXMax, &QDoubleSpinBox::valueChanged, ui->doubleSpinBoxXMin, &QDoubleSpinBox::setMaximum);
+    connect(ui->doubleSpinBoxXMin, &QDoubleSpinBox::valueChanged, ui->doubleSpinBoxXMax, &QDoubleSpinBox::setMinimum);
 }
 
 FunctionSettings::~FunctionSettings() = default;
