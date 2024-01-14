@@ -37,6 +37,6 @@ void MainWindow::ShowAboutDialog()
     msgBox.setIcon(QMessageBox::Icon::Information);
     msgBox.setTextFormat(Qt::RichText);
     msgBox.setWindowTitle(tr("About Grafika"));
-    msgBox.setText(tr("%1<br/><a href=\"%2\">%2</a>").arg("Functions grafics plotter").arg("https://github.com/LEOn4ik007/Grafika"));
+    msgBox.setText(tr("%1<br/><a href=\"%2\">%2</a>").arg("Functions graphics plotter").arg("https://github.com/LEOn4ik007/Grafika"));
     msgBox.exec();
 }
