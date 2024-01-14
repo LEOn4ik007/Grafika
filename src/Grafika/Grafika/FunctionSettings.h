@@ -25,9 +25,12 @@ public:
 private:
     double F(double x) const;
     void FillStyleCombobox();
+    void SetColor(const QColor & color);
+    void ShowColorDialog();
 
 private:
-    std::unique_ptr<Ui::FunctionSettings> ui;
     static int nextNumber;
+    std::unique_ptr<Ui::FunctionSettings> ui;
+    QColor curveColor;
 };
 
