@@ -34,19 +34,12 @@ MainWindow::~MainWindow()
 void MainWindow::CreateFunctionSettingsDialog()
 {
     auto * functionSettings = new FunctionSettings(this);
+    auto * curve = CreateCurve(functionSettings);
     functionSettings->show();
     auto * action = ui->menuFunctions->addAction(functionSettings->GetTitle(), [=] { functionSettings->show(); });
     connect(functionSettings, &FunctionSettings::titleChanged, action, &QAction::setText);
-    auto connection = connect(functionSettings, &QObject::destroyed, this, [&, action] { ui->menuFunctions->removeAction(action); });
+    auto connection = connect(functionSettings, &QObject::destroyed, this, [&, action, curve] { ui->menuFunctions->removeAction(action); delete curve; });
     connections.push_back(connection);
-    
-    QwtPlotCurve * curve = new QwtPlotCurve();
-    curve->setTitle(functionSettings->GetTitle());
-    curve->setPen(Qt::blue, 6);
-    curve->setRenderHint(QwtPlotItem::RenderAntialiased, true);
-    auto points = functionSettings->GetPoints();
-    curve->setSamples(points);
-    curve->attach(plot);
 }
 
 void MainWindow::ShowAboutDialog()
@@ -76,7 +69,19 @@ void MainWindow::SetupPlot()
     QwtPlotMagnifier * magnifier = new QwtPlotMagnifier(plot->canvas());
     magnifier->setMouseButton(Qt::MiddleButton);
 
-    QwtPlotPanner * d_panner = new QwtPlotPanner(plot->canvas());
+    QwtPlotPanner * panner = new QwtPlotPanner(plot->canvas());
+    panner->setMouseButton(Qt::RightButton);
+}
 
-    d_panner->setMouseButton(Qt::RightButton);
+QwtPlotCurve * MainWindow::CreateCurve(const FunctionSettings * functionSettings)
+{
+    auto * curve = new QwtPlotCurve();
+    curve->setTitle(functionSettings->GetTitle());
+    curve->setPen(Qt::blue, 6);
+    curve->setRenderHint(QwtPlotItem::RenderAntialiased, true);
+    auto points = functionSettings->GetPoints();
+    curve->setSamples(points);
+    curve->attach(plot);
+
+    return curve;
 }
