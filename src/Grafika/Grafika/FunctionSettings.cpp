@@ -25,6 +25,7 @@ FunctionSettings::FunctionSettings(QWidget * parent)
     SetupAutoMode(ui->checkBoxXMaxAuto, ui-> doubleSpinBoxXMax);
     SetupAutoMode(ui->checkBoxXMinAuto, ui->doubleSpinBoxXMin);
     SetupAutoMode(ui->checkBoxDeltaXAuto, ui->doubleSpinBoxDeltaX);
+    FillStyleCombobox();
 }
 
 FunctionSettings::~FunctionSettings() = default;
@@ -45,4 +46,14 @@ QPolygonF FunctionSettings::GetPoints() const
 double FunctionSettings::F(double x) const
 {
     return x;
+}
+
+void FunctionSettings::FillStyleCombobox()
+{
+    ui->comboBoxStyle->addItem(tr("Solid line"), static_cast<int>(Qt::SolidLine));
+    ui->comboBoxStyle->addItem(tr("Dash line"), static_cast<int>(Qt::DashLine));
+    ui->comboBoxStyle->addItem(tr("Dot line"), static_cast<int>(Qt::DotLine));
+    ui->comboBoxStyle->addItem(tr("Dash dot line"), static_cast<int>(Qt::DashDotLine));
+    ui->comboBoxStyle->addItem(tr("Dash dot dot line"), static_cast<int>(Qt::DashDotDotLine));
+    ui->comboBoxStyle->setCurrentIndex(0);
 }
