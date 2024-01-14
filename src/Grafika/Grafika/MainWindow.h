@@ -7,6 +7,8 @@
 
 namespace Ui { class MainWindowClass; };
 class QwtPlot;
+class QwtPlotCurve;
+class FunctionSettings;
 
 class MainWindow : public QMainWindow
 {
@@ -18,6 +20,7 @@ private:
     void CreateFunctionSettingsDialog();
     void ShowAboutDialog();
     void SetupPlot();
+    QwtPlotCurve * CreateCurve(const FunctionSettings * functionSettings);
 
 private:
     std::unique_ptr<Ui::MainWindowClass> ui;
