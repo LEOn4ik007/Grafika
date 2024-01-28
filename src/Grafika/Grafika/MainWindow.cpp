@@ -90,5 +90,5 @@ QwtPlotCurve * MainWindow::CreateCurve(const FunctionSettings * functionSettings
 void MainWindow::OnCurveViewChanged(const FunctionSettings * functionSettings, QwtPlotCurve * curve) const
 {
     curve->setPen(functionSettings->GetColor(),functionSettings->GetWidth(), functionSettings->GetPenStyle());
-    plot->repaint();
+    plot->replot();
 }
