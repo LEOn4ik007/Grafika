@@ -25,6 +25,8 @@ FunctionSettings::FunctionSettings(QWidget * parent)
     connect(ui->doubleSpinBoxXMax, &QDoubleSpinBox::valueChanged, ui->doubleSpinBoxXMin, &QDoubleSpinBox::setMaximum);
     connect(ui->doubleSpinBoxXMin, &QDoubleSpinBox::valueChanged, ui->doubleSpinBoxXMax, &QDoubleSpinBox::setMinimum);
     connect(ui->pushButtonColor, &QAbstractButton::clicked, this, &FunctionSettings::ShowColorDialog);
+    connect(ui->comboBoxStyle, &QComboBox::currentIndexChanged, this, &FunctionSettings::viewChanged);
+    connect(ui->spinBoxWidth, &QSpinBox::valueChanged, this, &FunctionSettings::viewChanged);
     SetupAutoMode(ui->checkBoxXMaxAuto, ui-> doubleSpinBoxXMax);
     SetupAutoMode(ui->checkBoxXMinAuto, ui->doubleSpinBoxXMin);
     SetupAutoMode(ui->checkBoxDeltaXAuto, ui->doubleSpinBoxDeltaX);
@@ -47,6 +49,21 @@ QPolygonF FunctionSettings::GetPoints() const
     return points;
 }
 
+const QColor & FunctionSettings::GetColor() const
+{
+    return curveColor;
+}
+
+double FunctionSettings::GetWidth() const
+{
+    return ui->spinBoxWidth->value();
+}
+
+Qt::PenStyle FunctionSettings::GetPenStyle() const
+{
+    return static_cast<Qt::PenStyle>(ui->comboBoxStyle->currentData().toInt());
+}
+
 double FunctionSettings::F(double x) const
 {
     return x;
@@ -66,6 +83,7 @@ void FunctionSettings::SetColor(const QColor & color)
 {
     ui->pushButtonColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3)").arg(color.red()).arg(color.green()).arg(color.blue()));
     curveColor = color;
+    emit viewChanged();
 }
 
 void FunctionSettings::ShowColorDialog()
