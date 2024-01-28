@@ -38,6 +38,7 @@ void MainWindow::CreateFunctionSettingsDialog()
     functionSettings->show();
     auto * action = ui->menuFunctions->addAction(functionSettings->GetTitle(), [=] { functionSettings->show(); });
     connect(functionSettings, &FunctionSettings::titleChanged, action, &QAction::setText);
+    connect(functionSettings, &FunctionSettings::viewChanged, [=] {OnCurveViewChanged(functionSettings, curve); });
     auto connection = connect(functionSettings, &QObject::destroyed, this, [&, action, curve] { ui->menuFunctions->removeAction(action); delete curve; });
     connections.push_back(connection);
 }
@@ -77,11 +78,17 @@ QwtPlotCurve * MainWindow::CreateCurve(const FunctionSettings * functionSettings
 {
     auto * curve = new QwtPlotCurve();
     curve->setTitle(functionSettings->GetTitle());
-    curve->setPen(Qt::blue, 6);
+    OnCurveViewChanged(functionSettings, curve);
     curve->setRenderHint(QwtPlotItem::RenderAntialiased, true);
     auto points = functionSettings->GetPoints();
     curve->setSamples(points);
     curve->attach(plot);
 
     return curve;
+}
+
+void MainWindow::OnCurveViewChanged(const FunctionSettings * functionSettings, QwtPlotCurve * curve) const
+{
+    curve->setPen(functionSettings->GetColor(),functionSettings->GetWidth(), functionSettings->GetPenStyle());
+    plot->repaint();
 }

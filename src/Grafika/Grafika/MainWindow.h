@@ -21,6 +21,7 @@ private:
     void ShowAboutDialog();
     void SetupPlot();
     QwtPlotCurve * CreateCurve(const FunctionSettings * functionSettings);
+    void OnCurveViewChanged(const FunctionSettings * functionSettings, QwtPlotCurve * curve) const;
 
 private:
     std::unique_ptr<Ui::MainWindowClass> ui;

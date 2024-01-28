@@ -13,6 +13,7 @@ class FunctionSettings :
 
 signals:
     void titleChanged(const QString & title) const;
+    void viewChanged() const;
 
 public:
     FunctionSettings(QWidget * parent = nullptr);
@@ -21,6 +22,9 @@ public:
 public:
     QString GetTitle() const;
     QPolygonF GetPoints() const;
+    const QColor & GetColor() const;
+    double GetWidth() const;
+    Qt::PenStyle GetPenStyle() const;
 
 private:
     double F(double x) const;
@@ -33,4 +37,3 @@ private:
     std::unique_ptr<Ui::FunctionSettings> ui;
     QColor curveColor;
 };
-
