@@ -78,6 +78,7 @@ QwtPlotCurve * MainWindow::CreateCurve(const FunctionSettings * functionSettings
 {
     auto * curve = new QwtPlotCurve();
     curve->setTitle(functionSettings->GetTitle());
+    connect(functionSettings, &FunctionSettings::titleChanged, [=] {curve->setTitle(functionSettings->GetTitle()); });
     OnCurveViewChanged(functionSettings, curve);
     curve->setRenderHint(QwtPlotItem::RenderAntialiased, true);
     auto points = functionSettings->GetPoints();
