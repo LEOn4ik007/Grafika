@@ -11,10 +11,8 @@
 #include <QwtPlotMagnifier>
 #include <QwtPlotPanner>
 #include <QwtPlotCurve>
-#include <QwtScaleDiv>
 
 #include "FunctionSettings.h"
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
