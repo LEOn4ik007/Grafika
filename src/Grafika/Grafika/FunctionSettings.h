@@ -4,7 +4,10 @@
 
 #include <QDialog>
 
-namespace Ui { class FunctionSettings; };
+namespace Ui { class FunctionSettings; }
+namespace exprtk { template<typename T> class expression; }
+
+class QTimer;
 
 class FunctionSettings :
     public QDialog
@@ -22,7 +25,7 @@ public:
 
 public:
     QString GetTitle() const;
-    QPolygonF GetPoints() const;
+    QPolygonF GetPoints();
     const QColor & GetColor() const;
     double GetWidth() const;
     Qt::PenStyle GetPenStyle() const;
@@ -33,10 +36,10 @@ public slots:
     void SetCanvasWidth(int value);
 
 private:
-    double F(double x) const;
     void FillStyleCombobox();
     void SetColor(const QColor & color);
     void ShowColorDialog();
+    void Parse();
 
 private:
     static int nextNumber;
@@ -44,4 +47,7 @@ private:
     QColor curveColor;
     double xMin{ 0.0 }, xMax{ 1000.0 };
     int canvasWidth{ 100 };
+    double x;
+    QTimer * changedTimer;
+    std::unique_ptr<exprtk::expression<double>> expression;
 };

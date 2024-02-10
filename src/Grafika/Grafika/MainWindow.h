@@ -31,7 +31,7 @@ private:
     void CreateFunctionSettingsDialog();
     void ShowAboutDialog();
     void SetupPlot();
-    QwtPlotCurve * CreateCurve(const FunctionSettings * functionSettings);
+    QwtPlotCurve * CreateCurve(FunctionSettings * functionSettings);
     void OnCurveViewChanged(const FunctionSettings * functionSettings, QwtPlotCurve * curve) const;
     void OnCheckXInterval();
 

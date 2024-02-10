@@ -99,7 +99,7 @@ void MainWindow::SetupPlot()
     plot->canvas()->installEventFilter(this);
 }
 
-QwtPlotCurve * MainWindow::CreateCurve(const FunctionSettings * functionSettings)
+QwtPlotCurve * MainWindow::CreateCurve(FunctionSettings * functionSettings)
 {
     auto * curve = new QwtPlotCurve();
     auto setPoints = [=] {
