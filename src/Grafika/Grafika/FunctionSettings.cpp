@@ -62,7 +62,9 @@ QPolygonF FunctionSettings::GetPoints()
 
     QPolygonF points;
     for (x = ui->doubleSpinBoxXMin->value(); x <= ui->doubleSpinBoxXMax->value(); x += ui->doubleSpinBoxDeltaX->value())
-        points << QPointF(x, expression->value());
+        if (auto y = expression->value(); !isnan(y))
+            points << QPointF(x, y);
+
     return points;
 }
 
