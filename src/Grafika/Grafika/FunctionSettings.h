@@ -26,6 +26,11 @@ public:
     double GetWidth() const;
     Qt::PenStyle GetPenStyle() const;
 
+public slots:
+    void SetXMin(double value);
+    void SetXMax(double value);
+    void SetCanvasWidth(int value);
+
 private:
     double F(double x) const;
     void FillStyleCombobox();
@@ -36,4 +41,6 @@ private:
     static int nextNumber;
     std::unique_ptr<Ui::FunctionSettings> ui;
     QColor curveColor;
+    double xMin, xMax;
+    int canvasWidth{100};
 };

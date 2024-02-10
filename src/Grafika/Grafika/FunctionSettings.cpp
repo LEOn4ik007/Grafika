@@ -64,6 +64,30 @@ Qt::PenStyle FunctionSettings::GetPenStyle() const
     return static_cast<Qt::PenStyle>(ui->comboBoxStyle->currentData().toInt());
 }
 
+void FunctionSettings::SetXMin(double value)
+{
+    xMin = value;
+    if (ui->checkBoxXMinAuto->isChecked())
+        ui->doubleSpinBoxXMin->setValue(value);
+    SetCanvasWidth(canvasWidth);
+}
+
+void FunctionSettings::SetXMax(double value)
+{
+    xMax = value;
+    if (ui->checkBoxXMaxAuto->isChecked())
+        ui->doubleSpinBoxXMax->setValue(value);
+    SetCanvasWidth(canvasWidth);
+}
+
+void FunctionSettings::SetCanvasWidth(int value)
+{
+    assert(value > 0);
+    canvasWidth = value;
+    if (ui->checkBoxDeltaXAuto->isChecked())
+        ui->doubleSpinBoxDeltaX->setValue((xMax - xMin) / canvasWidth);
+}
+
 double FunctionSettings::F(double x) const
 {
     return x;
