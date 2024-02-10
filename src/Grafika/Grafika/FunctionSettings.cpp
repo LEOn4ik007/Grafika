@@ -62,7 +62,9 @@ QPolygonF FunctionSettings::GetPoints()
 
     QPolygonF points;
     for (x = ui->doubleSpinBoxXMin->value(); x <= ui->doubleSpinBoxXMax->value(); x += ui->doubleSpinBoxDeltaX->value())
-        points << QPointF(x, expression->value());
+        if (auto y = expression->value(); !isnan(y))
+            points << QPointF(x, y);
+
     return points;
 }
 
@@ -146,10 +148,4 @@ void FunctionSettings::Parse()
         changedTimer->start();
     else
         expression.reset();
-
-    //for (x = T(-5); x <= T(+5); x += T(0.001))
-    //{
-    //    const T y = expression.value();
-    //    printf("%19.15f\t%19.15f\n", x, y);
-    //}
 }
