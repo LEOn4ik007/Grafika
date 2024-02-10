@@ -14,6 +14,7 @@ class FunctionSettings :
 signals:
     void titleChanged(const QString & title) const;
     void viewChanged() const;
+    void settingsChanged() const;
 
 public:
     FunctionSettings(QWidget * parent = nullptr);
@@ -41,6 +42,6 @@ private:
     static int nextNumber;
     std::unique_ptr<Ui::FunctionSettings> ui;
     QColor curveColor;
-    double xMin, xMax;
-    int canvasWidth{100};
+    double xMin{ 0.0 }, xMax{ 1000.0 };
+    int canvasWidth{ 100 };
 };

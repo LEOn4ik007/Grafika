@@ -3,6 +3,7 @@
 #include "ui_FunctionSettings.h"
 
 #include <QColorDialog>
+#include <QTimer>
 
 namespace
 {
@@ -20,6 +21,11 @@ FunctionSettings::FunctionSettings(QWidget * parent)
 {
     ui->setupUi(this);
     ui->lineEditTitle->setText(tr("Function %1").arg(++nextNumber));
+    
+    auto * changedTimer = new QTimer(this);
+    changedTimer->setSingleShot(true);
+    changedTimer->setInterval(std::chrono::milliseconds(50));
+
     connect(ui->lineEditTitle, &QLineEdit::textChanged, this, &FunctionSettings::titleChanged);
     connect(ui->buttonRemove, &QAbstractButton::clicked, this, &QObject::deleteLater);
     connect(ui->doubleSpinBoxXMax, &QDoubleSpinBox::valueChanged, ui->doubleSpinBoxXMin, &QDoubleSpinBox::setMaximum);
@@ -27,6 +33,11 @@ FunctionSettings::FunctionSettings(QWidget * parent)
     connect(ui->pushButtonColor, &QAbstractButton::clicked, this, &FunctionSettings::ShowColorDialog);
     connect(ui->comboBoxStyle, &QComboBox::currentIndexChanged, this, &FunctionSettings::viewChanged);
     connect(ui->spinBoxWidth, &QSpinBox::valueChanged, this, &FunctionSettings::viewChanged);
+    connect(ui->doubleSpinBoxXMin, &QDoubleSpinBox::valueChanged, changedTimer, qOverload<>(&QTimer::start));
+    connect(ui->doubleSpinBoxXMax, &QDoubleSpinBox::valueChanged, changedTimer, qOverload<>(&QTimer::start));
+    connect(ui->doubleSpinBoxDeltaX, &QDoubleSpinBox::valueChanged, changedTimer, qOverload<>(&QTimer::start));
+    connect(changedTimer, &QTimer::timeout, this, &FunctionSettings::settingsChanged);
+
     SetupAutoMode(ui->checkBoxXMaxAuto, ui-> doubleSpinBoxXMax);
     SetupAutoMode(ui->checkBoxXMinAuto, ui->doubleSpinBoxXMin);
     SetupAutoMode(ui->checkBoxDeltaXAuto, ui->doubleSpinBoxDeltaX);

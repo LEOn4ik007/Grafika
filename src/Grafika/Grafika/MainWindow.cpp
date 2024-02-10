@@ -51,13 +51,16 @@ void MainWindow::CreateFunctionSettingsDialog()
     auto * curve = CreateCurve(functionSettings);
     functionSettings->show();
     auto * action = ui->menuFunctions->addAction(functionSettings->GetTitle(), [=] { functionSettings->show(); });
+
     connect(functionSettings, &FunctionSettings::titleChanged, action, &QAction::setText);
     connect(functionSettings, &FunctionSettings::viewChanged, [=] {OnCurveViewChanged(functionSettings, curve); });
     connect(this, &MainWindow::xMinChanged, functionSettings, &FunctionSettings::SetXMin);
     connect(this, &MainWindow::xMaxChanged, functionSettings, &FunctionSettings::SetXMax);
     connect(this, &MainWindow::canvasWidthChanged, functionSettings, &FunctionSettings::SetCanvasWidth);
+
     auto connection = connect(functionSettings, &QObject::destroyed, this, [&, action, curve] { ui->menuFunctions->removeAction(action); delete curve; });
     connections.push_back(connection);
+
     functionSettings->SetCanvasWidth(plot->canvas()->width());
     functionSettings->SetXMin(xMin);
     functionSettings->SetXMax(xMax);
@@ -99,12 +102,17 @@ void MainWindow::SetupPlot()
 QwtPlotCurve * MainWindow::CreateCurve(const FunctionSettings * functionSettings)
 {
     auto * curve = new QwtPlotCurve();
+    auto setPoints = [=] {
+        auto points = functionSettings->GetPoints();
+        curve->setSamples(points); 
+    };
+
     curve->setTitle(functionSettings->GetTitle());
     connect(functionSettings, &FunctionSettings::titleChanged, [=] {curve->setTitle(functionSettings->GetTitle()); });
+    connect(functionSettings, &FunctionSettings::settingsChanged, setPoints);
     OnCurveViewChanged(functionSettings, curve);
     curve->setRenderHint(QwtPlotItem::RenderAntialiased, true);
-    auto points = functionSettings->GetPoints();
-    curve->setSamples(points);
+
     curve->attach(plot);
 
     return curve;
