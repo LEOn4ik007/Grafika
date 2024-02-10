@@ -98,7 +98,7 @@
     <QtUic Include="FunctionSettings.ui" />
     <QtUic Include="MainWindow.ui" />
     <QtMoc Include="FunctionSettings.h" />
-    <ClInclude Include="MainWindow.h" />
+    <QtMoc Include="MainWindow.h" />
     <ClCompile Include="FunctionSettings.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="main.cpp" />

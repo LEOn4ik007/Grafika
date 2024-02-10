@@ -45,7 +45,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tabSettings">
          <attribute name="title">
@@ -73,6 +73,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="QDoubleSpinBox" name="doubleSpinBoxXMin">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -92,8 +95,14 @@
             </item>
             <item>
              <widget class="QCheckBox" name="checkBoxXMinAuto">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Auto</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -110,6 +119,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QDoubleSpinBox" name="doubleSpinBoxXMax">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -129,8 +141,14 @@
             </item>
             <item>
              <widget class="QCheckBox" name="checkBoxXMaxAuto">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Auto</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -147,6 +165,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
              <widget class="QDoubleSpinBox" name="doubleSpinBoxDeltaX">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -172,8 +193,14 @@
             </item>
             <item>
              <widget class="QCheckBox" name="checkBoxDeltaXAuto">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Auto</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

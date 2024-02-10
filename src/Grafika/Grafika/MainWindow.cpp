@@ -3,6 +3,7 @@
 
 #include <QMessageBox>
 #include <QPen>
+#include <QTimer>
 
 #include <QwtPlot>
 #include <QwtLegend>
@@ -10,6 +11,7 @@
 #include <QwtPlotMagnifier>
 #include <QwtPlotPanner>
 #include <QwtPlotCurve>
+#include <QwtScaleDiv>
 
 #include "FunctionSettings.h"
 
@@ -17,18 +19,32 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(std::make_unique <Ui::MainWindowClass>())
+    , intervalTimer(new QTimer(this))
 {
     ui->setupUi(this);
     connect(ui->actionExit, &QAction::triggered, [] { QApplication::exit(0); });
     connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::CreateFunctionSettingsDialog);
     connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::ShowAboutDialog);
     SetupPlot();
+
+    intervalTimer->setSingleShot(false);
+    intervalTimer->setInterval(std::chrono::milliseconds(200));
+    connect(intervalTimer, &QTimer::timeout, this, &MainWindow::OnCheckXInterval);
+    intervalTimer->start();
 }
 
 MainWindow::~MainWindow()
 {
     for (auto connection : connections)
         disconnect(connection);
+}
+
+bool MainWindow::eventFilter(QObject * obj, QEvent * event)
+{
+    if (event->type() == QEvent::Resize)
+        emit canvasWidthChanged(plot->canvas()->width());
+
+    return QObject::eventFilter(obj, event);
 }
 
 void MainWindow::CreateFunctionSettingsDialog()
@@ -39,8 +55,14 @@ void MainWindow::CreateFunctionSettingsDialog()
     auto * action = ui->menuFunctions->addAction(functionSettings->GetTitle(), [=] { functionSettings->show(); });
     connect(functionSettings, &FunctionSettings::titleChanged, action, &QAction::setText);
     connect(functionSettings, &FunctionSettings::viewChanged, [=] {OnCurveViewChanged(functionSettings, curve); });
+    connect(this, &MainWindow::xMinChanged, functionSettings, &FunctionSettings::SetXMin);
+    connect(this, &MainWindow::xMaxChanged, functionSettings, &FunctionSettings::SetXMax);
+    connect(this, &MainWindow::canvasWidthChanged, functionSettings, &FunctionSettings::SetCanvasWidth);
     auto connection = connect(functionSettings, &QObject::destroyed, this, [&, action, curve] { ui->menuFunctions->removeAction(action); delete curve; });
     connections.push_back(connection);
+    functionSettings->SetCanvasWidth(plot->canvas()->width());
+    functionSettings->SetXMin(xMin);
+    functionSettings->SetXMax(xMax);
 }
 
 void MainWindow::ShowAboutDialog()
@@ -72,6 +94,8 @@ void MainWindow::SetupPlot()
 
     QwtPlotPanner * panner = new QwtPlotPanner(plot->canvas());
     panner->setMouseButton(Qt::RightButton);
+
+    plot->canvas()->installEventFilter(this);
 }
 
 QwtPlotCurve * MainWindow::CreateCurve(const FunctionSettings * functionSettings)
@@ -92,4 +116,19 @@ void MainWindow::OnCurveViewChanged(const FunctionSettings * functionSettings, Q
 {
     curve->setPen(functionSettings->GetColor(),functionSettings->GetWidth(), functionSettings->GetPenStyle());
     plot->replot();
+}
+
+void MainWindow::OnCheckXInterval()
+{
+    const auto interval = plot->axisInterval(QwtPlot::xBottom);
+    if (xMin != interval.minValue())
+    {
+        xMin = interval.minValue();
+        emit xMinChanged(xMin);
+    }
+    if (xMax != interval.maxValue())
+    {
+        xMax = interval.maxValue();
+        emit xMaxChanged(xMax);
+    }
 }
