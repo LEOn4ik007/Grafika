@@ -148,10 +148,4 @@ void FunctionSettings::Parse()
         changedTimer->start();
     else
         expression.reset();
-
-    //for (x = T(-5); x <= T(+5); x += T(0.001))
-    //{
-    //    const T y = expression.value();
-    //    printf("%19.15f\t%19.15f\n", x, y);
-    //}
 }
