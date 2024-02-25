@@ -10,6 +10,7 @@ class QTimer;
 class QwtPlot;
 class QwtPlotCurve;
 class FunctionSettings;
+class QLabel;
 
 class MainWindow : public QMainWindow
 {
@@ -41,4 +42,5 @@ private:
     QwtPlot * plot{ nullptr };
     QTimer * intervalTimer;
     double xMin, xMax;
+    QLabel * cursorCoordinates;
 };

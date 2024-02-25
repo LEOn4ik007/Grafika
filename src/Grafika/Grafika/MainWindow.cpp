@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QPen>
 #include <QTimer>
+#include <QLabel>
 
 #include <QwtPlot>
 #include <QwtLegend>
@@ -11,6 +12,8 @@
 #include <QwtPlotMagnifier>
 #include <QwtPlotPanner>
 #include <QwtPlotCurve>
+#include <QwtPlotPicker>
+#include <QwtPickerDragPointMachine>
 
 #include "FunctionSettings.h"
 
@@ -18,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(std::make_unique <Ui::MainWindowClass>())
     , intervalTimer(new QTimer(this))
+    , cursorCoordinates(new QLabel(this))
 {
     ui->setupUi(this);
     connect(ui->actionExit, &QAction::triggered, [] { QApplication::exit(0); });
@@ -29,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
     intervalTimer->setInterval(std::chrono::milliseconds(200));
     connect(intervalTimer, &QTimer::timeout, this, &MainWindow::OnCheckXInterval);
     intervalTimer->start();
+
+    ui->statusBar->addPermanentWidget(cursorCoordinates);
 }
 
 MainWindow::~MainWindow()
@@ -41,6 +47,12 @@ bool MainWindow::eventFilter(QObject * obj, QEvent * event)
 {
     if (event->type() == QEvent::Resize)
         emit canvasWidthChanged(plot->canvas()->width());
+
+    if (event->type() == QEvent::MouseMove)
+    {
+        const auto pos = static_cast<QMouseEvent *>(event)->pos();
+        cursorCoordinates->setText(QString("%1, %2").arg(plot->invTransform(QwtPlot::xBottom, pos.x())).arg(plot->invTransform(QwtPlot::yLeft, pos.y())));
+    }
 
     return QObject::eventFilter(obj, event);
 }
@@ -86,17 +98,32 @@ void MainWindow::SetupPlot()
     plot->setAxisTitle(QwtPlot::xBottom, "X");
     plot->insertLegend(new QwtLegend());
 
-    QwtPlotGrid * grid = new QwtPlotGrid();
-    grid->setMajorPen(QPen(Qt::gray, 1));
+    auto * grid = new QwtPlotGrid();
+    grid->setMajorPen(QPen(Qt::black, 1));
+    grid->setMinorPen(QPen(Qt::lightGray, 1, Qt::DotLine));
+    grid->enableXMin(true);
+    grid->enableYMin(true);
     grid->attach(plot);
 
-    QwtPlotMagnifier * magnifier = new QwtPlotMagnifier(plot->canvas());
+    auto * magnifier = new QwtPlotMagnifier(plot->canvas());
     magnifier->setMouseButton(Qt::MiddleButton);
 
-    QwtPlotPanner * panner = new QwtPlotPanner(plot->canvas());
+    auto * panner = new QwtPlotPanner(plot->canvas());
     panner->setMouseButton(Qt::RightButton);
 
+    auto * picker =
+        new QwtPlotPicker(
+            QwtPlot::xBottom, QwtPlot::yLeft,   
+            QwtPlotPicker::CrossRubberBand,
+            QwtPicker::ActiveOnly,
+            plot->canvas());
+    picker->setStateMachine(new QwtPickerDragPointMachine());
+ 
     plot->canvas()->installEventFilter(this);
+    plot->canvas()->setMouseTracking(true);
+
+    plot->setAxisScale(QwtPlot::xBottom, -10, 10);
+    plot->setAxisScale(QwtPlot::yLeft, -10, 10);
 }
 
 QwtPlotCurve * MainWindow::CreateCurve(FunctionSettings * functionSettings)
