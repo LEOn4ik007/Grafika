@@ -5,6 +5,7 @@
 #include <QPen>
 #include <QTimer>
 #include <QLabel>
+#include<QMouseEvent>
 
 #include <QwtPlot>
 #include <QwtLegend>
