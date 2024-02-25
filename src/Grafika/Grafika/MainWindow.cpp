@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QLabel>
 #include<QMouseEvent>
+#include <QPainter>
 
 #include <QwtPlot>
 #include <QwtLegend>
@@ -17,6 +18,40 @@
 #include <QwtPickerDragPointMachine>
 
 #include "FunctionSettings.h"
+
+class Plot : public QwtPlot
+{
+public:
+    explicit Plot(QWidget * parent)
+        : QwtPlot(parent)
+    {
+    }
+
+private:
+    void drawCanvas(QPainter * painter) override
+    {
+        const auto zeroPos = QPointF{ transform(QwtPlot::xBottom, 0.0), transform(QwtPlot::yLeft, 0.0) };
+        const auto canvasSize = QPointF{ static_cast<qreal>(canvas()->width()), static_cast<qreal>(canvas()->width()) };
+        painter->save();
+
+        painter->setPen(QPen(Qt::black, 3));
+        const auto right = QPointF{ canvasSize.x(), zeroPos.y() };
+        const auto top = QPointF{ zeroPos.x(), 0.0 };
+        painter->drawLine(top, QPointF{zeroPos.x(), canvasSize.y()});
+        painter->drawLine(QPointF{ 0.0, zeroPos.y() }, right);
+
+        painter->setPen(QPen(Qt::black, 2));
+
+        painter->drawLine(right, right - QPointF{ 20, 7 });
+        painter->drawLine(right, right - QPointF{ 20, -7 });
+        painter->drawLine(top, top + QPointF(7, 20));
+        painter->drawLine(top, top + QPointF(-7, 20));
+        
+        painter->restore();
+
+        QwtPlot::drawCanvas(painter);
+    }
+};
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -91,12 +126,10 @@ void MainWindow::ShowAboutDialog()
 
 void MainWindow::SetupPlot()
 {
-    plot = new QwtPlot(this);
+    plot = new Plot(this);
     setCentralWidget(plot);
 
     plot->setCanvasBackground(Qt::white);
-    plot->setAxisTitle(QwtPlot::yLeft, "Y");
-    plot->setAxisTitle(QwtPlot::xBottom, "X");
     plot->insertLegend(new QwtLegend());
 
     auto * grid = new QwtPlotGrid();
