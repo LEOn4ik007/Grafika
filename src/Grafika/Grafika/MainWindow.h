@@ -7,7 +7,7 @@
 
 namespace Ui { class MainWindowClass; };
 class QTimer;
-class QwtPlot;
+class Plot;
 class QwtPlotCurve;
 class FunctionSettings;
 class QLabel;
@@ -39,7 +39,7 @@ private:
 private:
     std::unique_ptr<Ui::MainWindowClass> ui;
     std::vector<QMetaObject::Connection> connections;
-    QwtPlot * plot{ nullptr };
+    Plot * plot{ nullptr };
     QTimer * intervalTimer;
     double xMin, xMax;
     QLabel * cursorCoordinates;

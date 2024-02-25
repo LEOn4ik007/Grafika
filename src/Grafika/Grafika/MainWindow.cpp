@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QLabel>
 #include<QMouseEvent>
+#include <QPainter>
 
 #include <QwtPlot>
 #include <QwtLegend>
@@ -17,6 +18,28 @@
 #include <QwtPickerDragPointMachine>
 
 #include "FunctionSettings.h"
+
+class Plot : public QwtPlot
+{
+public:
+    explicit Plot(QWidget * parent)
+        : QwtPlot(parent)
+    {
+    }
+
+private:
+    void drawCanvas(QPainter * painter) override
+    {
+        const auto zeroPos = QPointF{ transform(QwtPlot::xBottom, 0.0), transform(QwtPlot::yLeft, 0.0) };
+        painter->save();
+        painter->setPen(QPen(Qt::black, 3));
+        painter->drawLine(QPointF{ 0.0, zeroPos.y() }, QPointF{ static_cast<qreal>(canvas()->width()), zeroPos.y()});
+        painter->drawLine(QPointF{ zeroPos.x(), 0.0 }, QPointF{ zeroPos.x(), static_cast<qreal>(canvas()->height())});
+        painter->restore();
+
+        QwtPlot::drawCanvas(painter);
+    }
+};
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -91,7 +114,7 @@ void MainWindow::ShowAboutDialog()
 
 void MainWindow::SetupPlot()
 {
-    plot = new QwtPlot(this);
+    plot = new Plot(this);
     setCentralWidget(plot);
 
     plot->setCanvasBackground(Qt::white);
