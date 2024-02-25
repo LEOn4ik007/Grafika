@@ -31,10 +31,22 @@ private:
     void drawCanvas(QPainter * painter) override
     {
         const auto zeroPos = QPointF{ transform(QwtPlot::xBottom, 0.0), transform(QwtPlot::yLeft, 0.0) };
+        const auto canvasSize = QPointF{ static_cast<qreal>(canvas()->width()), static_cast<qreal>(canvas()->width()) };
         painter->save();
+
         painter->setPen(QPen(Qt::black, 3));
-        painter->drawLine(QPointF{ 0.0, zeroPos.y() }, QPointF{ static_cast<qreal>(canvas()->width()), zeroPos.y()});
-        painter->drawLine(QPointF{ zeroPos.x(), 0.0 }, QPointF{ zeroPos.x(), static_cast<qreal>(canvas()->height())});
+        const auto right = QPointF{ canvasSize.x(), zeroPos.y() };
+        const auto top = QPointF{ zeroPos.x(), 0.0 };
+        painter->drawLine(top, QPointF{zeroPos.x(), canvasSize.y()});
+        painter->drawLine(QPointF{ 0.0, zeroPos.y() }, right);
+
+        painter->setPen(QPen(Qt::black, 2));
+
+        painter->drawLine(right, right - QPointF{ 20, 7 });
+        painter->drawLine(right, right - QPointF{ 20, -7 });
+        painter->drawLine(top, top + QPointF(7, 20));
+        painter->drawLine(top, top + QPointF(-7, 20));
+        
         painter->restore();
 
         QwtPlot::drawCanvas(painter);
