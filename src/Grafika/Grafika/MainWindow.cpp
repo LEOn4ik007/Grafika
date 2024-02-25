@@ -106,7 +106,7 @@ void MainWindow::CreateFunctionSettingsDialog()
     connect(this, &MainWindow::xMaxChanged, functionSettings, &FunctionSettings::SetXMax);
     connect(this, &MainWindow::canvasWidthChanged, functionSettings, &FunctionSettings::SetCanvasWidth);
 
-    auto connection = connect(functionSettings, &QObject::destroyed, this, [&, action, curve] { ui->menuFunctions->removeAction(action); delete curve; });
+    auto connection = connect(functionSettings, &QObject::destroyed, this, [&, action, curve] { ui->menuFunctions->removeAction(action); curve->detach(); delete curve; });
     connections.push_back(connection);
 
     functionSettings->SetCanvasWidth(plot->canvas()->width());
@@ -166,6 +166,7 @@ QwtPlotCurve * MainWindow::CreateCurve(FunctionSettings * functionSettings)
     auto setPoints = [=] {
         auto points = functionSettings->GetPoints();
         curve->setSamples(points); 
+        plot->replot();
     };
 
     curve->setTitle(functionSettings->GetTitle());

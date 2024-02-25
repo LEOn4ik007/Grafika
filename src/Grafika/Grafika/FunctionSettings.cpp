@@ -40,7 +40,9 @@ FunctionSettings::FunctionSettings(QWidget * parent)
     connect(ui->doubleSpinBoxXMax, &QDoubleSpinBox::valueChanged, changedTimer, qOverload<>(&QTimer::start));
     connect(ui->doubleSpinBoxDeltaX, &QDoubleSpinBox::valueChanged, changedTimer, qOverload<>(&QTimer::start));
     connect(ui->lineEditFunctionString, &QLineEdit::textChanged, this, &FunctionSettings::Parse);
-    
+    auto functionToTitleConnection = connect(ui->lineEditFunctionString, &QLineEdit::textChanged, ui->lineEditTitle, &QLineEdit::setText);
+    connect(ui->lineEditTitle, &QLineEdit::textEdited, [=] {disconnect(functionToTitleConnection); });
+
     SetupAutoMode(ui->checkBoxXMaxAuto, ui-> doubleSpinBoxXMax);
     SetupAutoMode(ui->checkBoxXMinAuto, ui->doubleSpinBoxXMin);
     SetupAutoMode(ui->checkBoxDeltaXAuto, ui->doubleSpinBoxDeltaX);
@@ -144,8 +146,8 @@ void FunctionSettings::Parse()
     expression->register_symbol_table(symbol_table);
 
     exprtk::parser<double> parser;
-    if (parser.compile(expression_string, *expression))
-        changedTimer->start();
-    else
+    if (!parser.compile(expression_string, *expression))
         expression.reset();
+
+    changedTimer->start();
 }
