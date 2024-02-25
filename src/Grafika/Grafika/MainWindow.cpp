@@ -130,8 +130,6 @@ void MainWindow::SetupPlot()
     setCentralWidget(plot);
 
     plot->setCanvasBackground(Qt::white);
-    plot->setAxisTitle(QwtPlot::yLeft, "Y");
-    plot->setAxisTitle(QwtPlot::xBottom, "X");
     plot->insertLegend(new QwtLegend());
 
     auto * grid = new QwtPlotGrid();
