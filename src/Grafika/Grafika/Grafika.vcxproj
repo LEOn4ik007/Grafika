@@ -109,14 +109,19 @@
   <ItemGroup>
     <QtRcc Include="MainWindow.qrc" />
     <QtUic Include="FunctionSettings.ui" />
+    <QtUic Include="FunctionSyntaxDialog.ui" />
     <QtUic Include="MainWindow.ui" />
     <QtMoc Include="FunctionSettings.h" />
     <QtMoc Include="MainWindow.h" />
     <ClCompile Include="FunctionSettings.cpp" />
+    <ClCompile Include="FunctionSyntaxDialog.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="Grafika.ico" />
     <ResourceCompile Include="Grafika.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FunctionSyntaxDialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

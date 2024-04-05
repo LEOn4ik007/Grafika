@@ -18,6 +18,7 @@
 #include <QwtPickerDragPointMachine>
 
 #include "FunctionSettings.h"
+#include "FunctionSyntaxDialog.h"
 
 class Plot : public QwtPlot
 {
@@ -63,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionExit, &QAction::triggered, [] { QApplication::exit(0); });
     connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::CreateFunctionSettingsDialog);
     connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::ShowAboutDialog);
+    connect(ui->actionFuntionSyntax, &QAction::triggered, this, &MainWindow::OnFunctionSyntaxClicked);
     SetupPlot();
 
     intervalTimer->setSingleShot(false);
@@ -199,4 +201,11 @@ void MainWindow::OnCheckXInterval()
         xMax = interval.maxValue();
         emit xMaxChanged(xMax);
     }
+}
+
+void MainWindow::OnFunctionSyntaxClicked()
+{
+    if (!functionSyntaxDialog)
+        functionSyntaxDialog = new FunctionSyntaxDialog(this);
+    functionSyntaxDialog->show();
 }

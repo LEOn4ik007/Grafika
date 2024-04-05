@@ -7,10 +7,11 @@
 
 namespace Ui { class MainWindowClass; };
 class QTimer;
+class QLabel;
 class Plot;
 class QwtPlotCurve;
 class FunctionSettings;
-class QLabel;
+class FunctionSyntaxDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -35,6 +36,7 @@ private:
     QwtPlotCurve * CreateCurve(FunctionSettings * functionSettings);
     void OnCurveViewChanged(const FunctionSettings * functionSettings, QwtPlotCurve * curve) const;
     void OnCheckXInterval();
+    void OnFunctionSyntaxClicked();
 
 private:
     std::unique_ptr<Ui::MainWindowClass> ui;
@@ -43,4 +45,5 @@ private:
     QTimer * intervalTimer;
     double xMin, xMax;
     QLabel * cursorCoordinates;
+    FunctionSyntaxDialog * functionSyntaxDialog{nullptr};
 };

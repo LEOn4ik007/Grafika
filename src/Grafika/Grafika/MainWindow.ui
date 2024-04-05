@@ -40,6 +40,7 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="actionFuntionSyntax"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
@@ -60,6 +61,14 @@
   <action name="actionAbout">
    <property name="text">
     <string>About...</string>
+   </property>
+  </action>
+  <action name="actionFuntionSyntax">
+   <property name="text">
+    <string>Funtion's &amp;syntax</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
    </property>
   </action>
  </widget>
