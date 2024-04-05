@@ -10,7 +10,6 @@ class FunctionSyntaxDialog;
 class FunctionSyntaxDialog final
 	: public QDialog
 {
-	Q_OBJECT
 public:
 	FunctionSyntaxDialog(QWidget* parent = nullptr);
 	~FunctionSyntaxDialog() override;

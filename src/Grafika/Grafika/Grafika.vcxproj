@@ -121,7 +121,7 @@
     <ResourceCompile Include="Grafika.rc" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="FunctionSyntaxDialog.h" />
+    <ClInclude Include="FunctionSyntaxDialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
