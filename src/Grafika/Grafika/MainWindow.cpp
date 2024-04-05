@@ -32,7 +32,7 @@ private:
     void drawCanvas(QPainter * painter) override
     {
         const auto zeroPos = QPointF{ transform(QwtPlot::xBottom, 0.0), transform(QwtPlot::yLeft, 0.0) };
-        const auto canvasSize = QPointF{ static_cast<qreal>(canvas()->width()), static_cast<qreal>(canvas()->width()) };
+        const auto canvasSize = QPointF{ static_cast<qreal>(canvas()->width()), static_cast<qreal>(canvas()->height()) };
         painter->save();
 
         painter->setPen(QPen(Qt::black, 3));
