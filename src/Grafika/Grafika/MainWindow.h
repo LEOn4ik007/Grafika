@@ -8,6 +8,7 @@
 namespace Ui { class MainWindowClass; };
 class QTimer;
 class QLabel;
+class QSettings;
 class Plot;
 class QwtPlotCurve;
 class FunctionSettings;
@@ -23,7 +24,7 @@ signals:
     void canvasWidthChanged(int value) const;
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QSettings & settings, QWidget *parent = nullptr);
     ~MainWindow() override;
 
 private:
@@ -37,8 +38,13 @@ private:
     void OnCurveViewChanged(const FunctionSettings * functionSettings, QwtPlotCurve * curve) const;
     void OnCheckXInterval();
     void OnFunctionSyntaxClicked();
+    void OnEnglishClicked();
+    void OnRussianClicked();
+    void SetLang(const QString & lang);
+    void SetupLang();
 
 private:
+    QSettings & settings;
     std::unique_ptr<Ui::MainWindowClass> ui;
     std::vector<QMetaObject::Connection> connections;
     Plot * plot{ nullptr };
