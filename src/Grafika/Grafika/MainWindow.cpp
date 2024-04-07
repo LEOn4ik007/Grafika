@@ -5,8 +5,9 @@
 #include <QPen>
 #include <QTimer>
 #include <QLabel>
-#include<QMouseEvent>
+#include <QMouseEvent>
 #include <QPainter>
+#include <QSettings>
 
 #include <QwtPlot>
 #include <QwtLegend>
@@ -54,13 +55,16 @@ private:
     }
 };
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QSettings & settings, QWidget * parent)
     : QMainWindow(parent)
+    , settings(settings)
     , ui(std::make_unique <Ui::MainWindowClass>())
     , intervalTimer(new QTimer(this))
     , cursorCoordinates(new QLabel(this))
 {
     ui->setupUi(this);
+    connect(ui->actionEnglish, &QAction::triggered, this, &MainWindow::OnEnglishClicked);
+    connect(ui->actionRussian, &QAction::triggered, this, &MainWindow::OnRussianClicked);
     connect(ui->actionExit, &QAction::triggered, [] { QApplication::exit(0); });
     connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::CreateFunctionSettingsDialog);
     connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::ShowAboutDialog);
@@ -73,6 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
     intervalTimer->start();
 
     ui->statusBar->addPermanentWidget(cursorCoordinates);
+    SetupLang();
 }
 
 MainWindow::~MainWindow()
@@ -208,4 +213,32 @@ void MainWindow::OnFunctionSyntaxClicked()
     if (!functionSyntaxDialog)
         functionSyntaxDialog = new FunctionSyntaxDialog(this);
     functionSyntaxDialog->show();
+}
+
+void MainWindow::OnEnglishClicked()
+{
+    SetLang("en");
+}
+void MainWindow::OnRussianClicked()
+{
+    SetLang("ru");
+}
+
+void MainWindow::SetLang(const QString & lang)
+{
+    settings.setValue("lang", lang);
+    SetupLang();
+    const auto selected = QMessageBox::question(this, tr("Attention!"), tr("You should restart app to apply changes. Do it now?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+    if (selected == QMessageBox::Yes)
+        QCoreApplication::exit(96);
+}
+
+void MainWindow::SetupLang()
+{
+    const auto setlang = [](QAction * action, bool active) {action->setChecked(active); action->setEnabled(!active); };
+    setlang(ui->actionEnglish, false);
+    setlang(ui->actionRussian, false);
+    const auto lang = settings.value("lang");
+    setlang(lang == "ru" ? ui->actionRussian : ui->actionEnglish, true);
 }
