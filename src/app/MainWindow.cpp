@@ -48,7 +48,7 @@ private:
         painter->drawLine(right, right - QPointF{ 20, -7 });
         painter->drawLine(top, top + QPointF(7, 20));
         painter->drawLine(top, top + QPointF(-7, 20));
-        
+
         painter->restore();
 
         QwtPlot::drawCanvas(painter);
@@ -154,12 +154,12 @@ void MainWindow::SetupPlot()
 
     auto * picker =
         new QwtPlotPicker(
-            QwtPlot::xBottom, QwtPlot::yLeft,   
+            QwtPlot::xBottom, QwtPlot::yLeft,
             QwtPlotPicker::CrossRubberBand,
             QwtPicker::ActiveOnly,
             plot->canvas());
     picker->setStateMachine(new QwtPickerDragPointMachine());
- 
+
     plot->canvas()->installEventFilter(this);
     plot->canvas()->setMouseTracking(true);
 
@@ -172,7 +172,7 @@ QwtPlotCurve * MainWindow::CreateCurve(FunctionSettings * functionSettings)
     auto * curve = new QwtPlotCurve();
     auto setPoints = [=] {
         auto points = functionSettings->GetPoints();
-        curve->setSamples(points); 
+        curve->setSamples(points);
         plot->replot();
     };
 
