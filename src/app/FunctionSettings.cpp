@@ -31,14 +31,14 @@ FunctionSettings::FunctionSettings(QWidget * parent)
 
     connect(ui->lineEditTitle, &QLineEdit::textChanged, this, &FunctionSettings::titleChanged);
     connect(ui->buttonRemove, &QAbstractButton::clicked, this, &QObject::deleteLater);
-    connect(ui->doubleSpinBoxXMax, &QDoubleSpinBox::valueChanged, ui->doubleSpinBoxXMin, &QDoubleSpinBox::setMaximum);
-    connect(ui->doubleSpinBoxXMin, &QDoubleSpinBox::valueChanged, ui->doubleSpinBoxXMax, &QDoubleSpinBox::setMinimum);
+    connect(ui->doubleSpinBoxXMax, qOverload<double>(&QDoubleSpinBox::valueChanged), ui->doubleSpinBoxXMin, &QDoubleSpinBox::setMaximum);
+    connect(ui->doubleSpinBoxXMin, qOverload<double>(&QDoubleSpinBox::valueChanged), ui->doubleSpinBoxXMax, &QDoubleSpinBox::setMinimum);
     connect(ui->pushButtonColor, &QAbstractButton::clicked, this, &FunctionSettings::ShowColorDialog);
-    connect(ui->comboBoxStyle, &QComboBox::currentIndexChanged, this, &FunctionSettings::viewChanged);
-    connect(ui->spinBoxWidth, &QSpinBox::valueChanged, this, &FunctionSettings::viewChanged);
-    connect(ui->doubleSpinBoxXMin, &QDoubleSpinBox::valueChanged, changedTimer, qOverload<>(&QTimer::start));
-    connect(ui->doubleSpinBoxXMax, &QDoubleSpinBox::valueChanged, changedTimer, qOverload<>(&QTimer::start));
-    connect(ui->doubleSpinBoxDeltaX, &QDoubleSpinBox::valueChanged, changedTimer, qOverload<>(&QTimer::start));
+    connect(ui->comboBoxStyle, qOverload<int>(&QComboBox::currentIndexChanged), this, &FunctionSettings::viewChanged);
+    connect(ui->spinBoxWidth, qOverload<int>(&QSpinBox::valueChanged), this, &FunctionSettings::viewChanged);
+    connect(ui->doubleSpinBoxXMin, qOverload<double>(&QDoubleSpinBox::valueChanged), changedTimer, qOverload<>(&QTimer::start));
+    connect(ui->doubleSpinBoxXMax, qOverload<double>(&QDoubleSpinBox::valueChanged), changedTimer, qOverload<>(&QTimer::start));
+    connect(ui->doubleSpinBoxDeltaX, qOverload<double>(&QDoubleSpinBox::valueChanged), changedTimer, qOverload<>(&QTimer::start));
     connect(ui->lineEditFunctionString, &QLineEdit::textChanged, this, &FunctionSettings::Parse);
     auto functionToTitleConnection = connect(ui->lineEditFunctionString, &QLineEdit::textChanged, ui->lineEditTitle, &QLineEdit::setText);
     connect(ui->lineEditTitle, &QLineEdit::textEdited, [=] {disconnect(functionToTitleConnection); });
