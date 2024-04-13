@@ -1,2 +1,5 @@
 <RCC>
+	<qresource prefix="icons">
+		<file alias="Exclamation.png">icons/Exclamation.png</file>
+	</qresource>
 </RCC>

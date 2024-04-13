@@ -2,6 +2,7 @@
 
 #include "ui_FunctionSettings.h"
 
+#include <QAction>
 #include <QColorDialog>
 #include <QTimer>
 
@@ -42,6 +43,9 @@ FunctionSettings::FunctionSettings(QWidget * parent)
     connect(ui->lineEditFunctionString, &QLineEdit::textChanged, this, &FunctionSettings::Parse);
     auto functionToTitleConnection = connect(ui->lineEditFunctionString, &QLineEdit::textChanged, ui->lineEditTitle, &QLineEdit::setText);
     connect(ui->lineEditTitle, &QLineEdit::textEdited, [=] {disconnect(functionToTitleConnection); });
+
+    invalidExpression = ui->lineEditFunctionString->addAction(QIcon(":/icons/Exclamation.png"), QLineEdit::ActionPosition::TrailingPosition);
+    invalidExpression->setVisible(false);
 
     SetupAutoMode(ui->checkBoxXMaxAuto, ui-> doubleSpinBoxXMax);
     SetupAutoMode(ui->checkBoxXMinAuto, ui->doubleSpinBoxXMin);
@@ -148,6 +152,8 @@ void FunctionSettings::Parse()
     exprtk::parser<double> parser;
     if (!parser.compile(expression_string, *expression))
         expression.reset();
+
+    invalidExpression->setVisible(!expression_string.empty() && !expression);
 
     changedTimer->start();
 }
