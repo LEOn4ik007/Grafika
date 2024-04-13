@@ -18,9 +18,21 @@ endif ()
 
 set(QT_MAJOR 5)
 set(QT_MINOR 15.2)
+
 set(QT_DIR "${SDK_DIR}/Qt/Qt${QT_MAJOR}/${QT_MAJOR}.${QT_MINOR}/msvc2019_64")
-set(QWT_DIR "${SDK_DIR}/Qwt/Qt5")
+if (NOT(EXISTS ${QT_DIR}))
+	message(FATAL_ERROR "${QT_DIR} fot found")
+endif()
+
+set(QWT_DIR "${SDK_DIR}/Qwt/Qt${QT_MAJOR}")
+if (NOT(EXISTS ${QWT_DIR}))
+	message(FATAL_ERROR "${QWT_DIR} fot found")
+endif()
+
 set(EXPRTK_DIR "${SDK_DIR}/exprtk/include")
+if (NOT(EXISTS ${EXPRTK_DIR}))
+	message(FATAL_ERROR "${EXPRTK_DIR} fot found")
+endif()
 
 list(APPEND CMAKE_PREFIX_PATH ${QT_DIR})
 list(APPEND CMAKE_MODULE_PATH ${QWT_DIR})
