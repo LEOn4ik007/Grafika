@@ -5,7 +5,7 @@ set PRODUCT_VERSION=0.2.0
 
 set BUILD_DIR=build
 mkdir %~dp0%BUILD_DIR%
-del *.sln
+del %~dp0%BUILD_DIR%\*.sln
 
 cmake ^
 --no-warn-unused-cli ^
