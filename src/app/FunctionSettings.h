@@ -7,6 +7,7 @@
 namespace Ui { class FunctionSettings; }
 namespace exprtk { template<typename T> class expression; }
 
+class QAction;
 class QTimer;
 
 class FunctionSettings :
@@ -50,4 +51,5 @@ private:
     double x;
     QTimer * changedTimer;
     std::unique_ptr<exprtk::expression<double>> expression;
+    QAction * invalidExpression{ nullptr };
 };
