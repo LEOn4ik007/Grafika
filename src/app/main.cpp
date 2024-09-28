@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     const auto pathTemplate = QString("%1/%2").arg(a.applicationDirPath(), "%1");
 
     QSettings settings(pathTemplate.arg("Grafika.ini"), QSettings::Format::IniFormat);
-    
+
     while (true)
     {
         auto lang = settings.value("lang").toString();
