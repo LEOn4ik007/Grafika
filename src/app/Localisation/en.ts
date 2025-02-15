@@ -527,32 +527,32 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../FunctionSettings.cpp" line="26"/>
+        <location filename="../FunctionSettings.cpp" line="27"/>
         <source>Function %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FunctionSettings.cpp" line="114"/>
+        <location filename="../FunctionSettings.cpp" line="118"/>
         <source>Solid line</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FunctionSettings.cpp" line="115"/>
+        <location filename="../FunctionSettings.cpp" line="119"/>
         <source>Dash line</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FunctionSettings.cpp" line="116"/>
+        <location filename="../FunctionSettings.cpp" line="120"/>
         <source>Dot line</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FunctionSettings.cpp" line="117"/>
+        <location filename="../FunctionSettings.cpp" line="121"/>
         <source>Dash dot line</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FunctionSettings.cpp" line="118"/>
+        <location filename="../FunctionSettings.cpp" line="122"/>
         <source>Dash dot dot line</source>
         <translation></translation>
     </message>
