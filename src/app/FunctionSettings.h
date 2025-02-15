@@ -5,10 +5,10 @@
 #include <QDialog>
 
 namespace Ui { class FunctionSettings; }
-namespace exprtk { template<typename T> class expression; }
 
 class QAction;
 class QTimer;
+class ExprtkWrapper;
 
 class FunctionSettings :
     public QDialog
@@ -50,6 +50,6 @@ private:
     int canvasWidth{ 100 };
     double x;
     QTimer * changedTimer;
-    std::unique_ptr<exprtk::expression<double>> expression;
+    std::unique_ptr<ExprtkWrapper> expression;
     QAction * invalidExpression{ nullptr };
 };
