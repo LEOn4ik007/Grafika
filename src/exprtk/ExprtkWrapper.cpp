@@ -16,9 +16,7 @@ ExprtkWrapper::ExprtkWrapper(std::string function, std::string name, double&x)
         m_expression.reset();
 }
 
-ExprtkWrapper::~ExprtkWrapper()
-{
-}
+ExprtkWrapper::~ExprtkWrapper() = default;
 
 double ExprtkWrapper::GetValue() const
 {
