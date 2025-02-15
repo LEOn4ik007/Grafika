@@ -89,8 +89,12 @@ add_executable(${PROJECT_NAME} WIN32
 	${SCRIPTS}
 )
 
+add_library(exprtk SHARED ${CMAKE_CURRENT_LIST_DIR}/src/exprtk/ExprtkWrapper.h ${CMAKE_CURRENT_LIST_DIR}/src/exprtk/ExprtkWrapper.cpp)
+
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt::Core Qt::Gui Qt::Widgets Qwt)
-target_include_directories(${PROJECT_NAME} PRIVATE ${EXPRTK_DIR})
+target_include_directories(exprtk PRIVATE ${EXPRTK_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src/exprtk)
+target_link_libraries(${PROJECT_NAME} PRIVATE exprtk)
 
 # Копируем нужные библиотеки
 set(QT_PREFIX ${QT_DIR}/bin/Qt${QT_MAJOR})

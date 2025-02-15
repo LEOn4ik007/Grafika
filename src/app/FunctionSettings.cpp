@@ -6,7 +6,7 @@
 #include <QColorDialog>
 #include <QTimer>
 
-#include <exprtk.hpp>
+#include "ExprtkWrapper.h"
 
 namespace
 {
@@ -63,12 +63,12 @@ QString FunctionSettings::GetTitle() const
 
 QPolygonF FunctionSettings::GetPoints()
 {
-    if (!expression)
+    if (!expression || !expression->IsValid())
         return {};
 
     QPolygonF points;
     for (x = ui->doubleSpinBoxXMin->value(); x <= ui->doubleSpinBoxXMax->value(); x += ui->doubleSpinBoxDeltaX->value())
-        if (auto y = expression->value(); !isnan(y))
+        if (auto y = expression->GetValue(); !isnan(y))
             points << QPointF(x, y);
 
     return points;
@@ -141,19 +141,8 @@ void FunctionSettings::ShowColorDialog()
 void FunctionSettings::Parse()
 {
     const auto expression_string = ui->lineEditFunctionString->text().toStdString();
-
-    exprtk::symbol_table<double> symbol_table;
-    symbol_table.add_variable("x", x);
-    symbol_table.add_constants();
-
-    expression = std::make_unique<exprtk::expression<double>>();
-    expression->register_symbol_table(symbol_table);
-
-    exprtk::parser<double> parser;
-    if (!parser.compile(expression_string, *expression))
-        expression.reset();
-
-    invalidExpression->setVisible(!expression_string.empty() && !expression);
+    expression = std::make_unique<ExprtkWrapper>(expression_string, "x", x);
+    invalidExpression->setVisible(!expression_string.empty() && !expression->IsValid());
 
     changedTimer->start();
 }
