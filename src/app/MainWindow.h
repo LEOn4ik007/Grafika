@@ -13,6 +13,7 @@ class Plot;
 class QwtPlotCurve;
 class FunctionSettings;
 class FunctionSyntaxDialog;
+class QwtPlotMagnifier;
 
 class MainWindow : public QMainWindow
 {
@@ -52,4 +53,5 @@ private:
     double xMin, xMax;
     QLabel * cursorCoordinates;
     FunctionSyntaxDialog * functionSyntaxDialog{nullptr};
+    QwtPlotMagnifier * qwtPlotMagnifier;
 };

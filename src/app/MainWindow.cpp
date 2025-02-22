@@ -95,6 +95,23 @@ bool MainWindow::eventFilter(QObject * obj, QEvent * event)
     {
         const auto pos = static_cast<QMouseEvent *>(event)->pos();
         cursorCoordinates->setText(QString("%1, %2").arg(plot->invTransform(QwtPlot::xBottom, pos.x())).arg(plot->invTransform(QwtPlot::yLeft, pos.y())));
+        qwtPlotMagnifier->setAxisEnabled(QwtAxis::XTop, false);
+        qwtPlotMagnifier->setAxisEnabled(QwtAxis::XBottom, false);
+        qwtPlotMagnifier->setAxisEnabled(QwtAxis::YLeft, false);
+        qwtPlotMagnifier->setAxisEnabled(QwtAxis::YRight, false);
+
+        const auto size = plot->canvas()->size();
+        if (pos.x() > size.width() / 3 && pos.x() < size.width() * 2 / 3)
+        {
+            qwtPlotMagnifier->setAxisEnabled(QwtAxis::YLeft, true);
+            qwtPlotMagnifier->setAxisEnabled(QwtAxis::YRight, true);
+        }
+        
+        if (pos.y() > size.height() / 3 && pos.y() < size.height() * 2 / 3)
+        {
+            qwtPlotMagnifier->setAxisEnabled(QwtAxis::XTop, true);
+            qwtPlotMagnifier->setAxisEnabled(QwtAxis::XBottom, true);
+        }
     }
 
     return QObject::eventFilter(obj, event);
@@ -146,9 +163,9 @@ void MainWindow::SetupPlot()
     grid->enableYMin(true);
     grid->attach(plot);
 
-    auto * magnifier = new QwtPlotMagnifier(plot->canvas());
-    magnifier->setMouseButton(Qt::MiddleButton);
-
+    qwtPlotMagnifier = new QwtPlotMagnifier(plot->canvas());
+    qwtPlotMagnifier->setMouseButton(Qt::MiddleButton);
+    
     auto * panner = new QwtPlotPanner(plot->canvas());
     panner->setMouseButton(Qt::RightButton);
 
