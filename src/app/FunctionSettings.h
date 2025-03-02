@@ -26,7 +26,7 @@ public:
 
 public:
     QString GetTitle() const;
-    QPolygonF GetPoints();
+    std::vector<QPolygonF> GetPoints();
     const QColor & GetColor() const;
     double GetWidth() const;
     Qt::PenStyle GetPenStyle() const;

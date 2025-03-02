@@ -61,7 +61,7 @@ QString FunctionSettings::GetTitle() const
     return ui->lineEditTitle->text();
 }
 
-QPolygonF FunctionSettings::GetPoints()
+std::vector<QPolygonF> FunctionSettings::GetPoints()
 {
     if (!expression || !expression->IsValid())
         return {};
@@ -71,7 +71,7 @@ QPolygonF FunctionSettings::GetPoints()
         if (auto y = expression->GetValue(); !isnan(y))
             points << QPointF(x, y);
 
-    return points;
+    return { points };
 }
 
 const QColor & FunctionSettings::GetColor() const

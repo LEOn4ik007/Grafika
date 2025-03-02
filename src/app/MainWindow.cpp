@@ -188,8 +188,8 @@ QwtPlotCurve * MainWindow::CreateCurve(FunctionSettings * functionSettings)
 {
     auto * curve = new QwtPlotCurve();
     auto setPoints = [=] {
-        auto points = functionSettings->GetPoints();
-        curve->setSamples(points);
+        for (const auto& points : functionSettings->GetPoints())
+            curve->setSamples(points);
         plot->replot();
     };
 
