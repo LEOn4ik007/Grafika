@@ -61,17 +61,37 @@ QString FunctionSettings::GetTitle() const
     return ui->lineEditTitle->text();
 }
 
-QPolygonF FunctionSettings::GetPoints()
+std::vector<QPolygonF> FunctionSettings::GetPoints()
 {
     if (!expression || !expression->IsValid())
         return {};
 
-    QPolygonF points;
-    for (x = ui->doubleSpinBoxXMin->value(); x <= ui->doubleSpinBoxXMax->value(); x += ui->doubleSpinBoxDeltaX->value())
-        if (auto y = expression->GetValue(); !isnan(y))
-            points << QPointF(x, y);
+    std::vector<QPolygonF> pointsVector;
+    auto* points = &pointsVector.emplace_back(QPolygonF{});
+    for (x = ui->doubleSpinBoxXMin->value(); x <= ui->doubleSpinBoxXMax->value(); x += ui->doubleSpinBoxDeltaX->value()/10)
+    {
+        auto y = expression->GetValue();
+        if (isnan(y))
+        {
+            if(!points->empty())
+                points = &pointsVector.emplace_back(QPolygonF{});
+            continue;
+        }
+        if (points->empty())
+        {
+            *points << QPointF(x, y);
+            continue;
+        }
+        const auto& prevPoint = points->back();
+        if (std::abs(prevPoint.y() - y) > (x - prevPoint.x())*1000)
+            points = &pointsVector.emplace_back(QPolygonF{});
+        
+        const QPointF point(x, y);
+        if(point != prevPoint)
+            *points << QPointF(x, y);
+    }
 
-    return points;
+    return pointsVector;
 }
 
 const QColor & FunctionSettings::GetColor() const

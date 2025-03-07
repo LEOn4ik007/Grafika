@@ -35,14 +35,16 @@ private:
     void CreateFunctionSettingsDialog();
     void ShowAboutDialog();
     void SetupPlot();
-    QwtPlotCurve * CreateCurve(FunctionSettings * functionSettings);
-    void OnCurveViewChanged(const FunctionSettings * functionSettings, QwtPlotCurve * curve) const;
+    void CreateCurves(FunctionSettings * functionSettings);
+    void OnCurvesViewChanged(const FunctionSettings * functionSettings);
     void OnCheckXInterval();
     void OnFunctionSyntaxClicked();
     void OnEnglishClicked();
     void OnRussianClicked();
     void SetLang(const QString & lang);
     void SetupLang();
+    std::vector<QwtPlotCurve*>& GetCurves(const FunctionSettings*);
+    void DropCurves(std::vector<QwtPlotCurve*>&);
 
 private:
     QSettings & settings;
@@ -54,4 +56,5 @@ private:
     QLabel * cursorCoordinates;
     FunctionSyntaxDialog * functionSyntaxDialog{nullptr};
     QwtPlotMagnifier * qwtPlotMagnifier;
+    std::unordered_map<const FunctionSettings*, std::vector<QwtPlotCurve *>> settingsCurves;
 };
