@@ -25,7 +25,7 @@ signals:
     void canvasWidthChanged(int value) const;
 
 public:
-    MainWindow(QSettings & settings, QWidget *parent = nullptr);
+    MainWindow(QApplication & app, QSettings & settings, QWidget *parent = nullptr);
     ~MainWindow() override;
 
 private:
