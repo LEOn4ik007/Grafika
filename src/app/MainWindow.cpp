@@ -66,18 +66,28 @@ MainWindow::MainWindow(QApplication& app, QSettings& settings, QWidget* parent)
 {
 	ui->setupUi(this);
 
+	auto setTheme = [&app, &settings](const QString& filename)
+	{
+		QFile file(filename);
+		file.open(QIODevice::ReadOnly);
+		app.setStyleSheet(QString::fromUtf8(file.readAll()));
+	};
+
 	for (const auto& fileInfo : QDir(":/themes").entryInfoList(QDir::Files))
 	{
 		if (fileInfo.suffix().toLower() == "qss")
 		{
-			ui->menuThemes->addAction(fileInfo.completeBaseName(), this, [&app, filename=fileInfo.filePath()]{
-				QFile file(filename);
-				file.open(QIODevice::ReadOnly);
-				app.setStyleSheet(QString::fromUtf8(file.readAll()));
-					});
+			ui->menuThemes->addAction(fileInfo.completeBaseName(), this, [setTheme, &settings, filename=fileInfo.filePath()]
+			{
+					setTheme(filename);	
+					settings.setValue("theme", filename);
+
+			});
 		}
 	}
-	
+	if (const auto theme = settings.value("theme"); theme.isValid())
+		setTheme(theme.toString());
+
 	connect(ui->actionEnglish, &QAction::triggered, this, &MainWindow::OnEnglishClicked);
 	connect(ui->actionRussian, &QAction::triggered, this, &MainWindow::OnRussianClicked);
 	connect(ui->actionExit, &QAction::triggered, [] { QApplication::exit(0); });
