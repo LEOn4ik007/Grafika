@@ -17,6 +17,8 @@
 #include <QwtPlotCurve>
 #include <QwtPlotPicker>
 #include <QwtPickerDragPointMachine>
+#include <QDirIterator>
+#include <QDebug>
 
 #include "FunctionSettings.h"
 #include "FunctionSyntaxDialog.h"
@@ -55,7 +57,7 @@ private:
 	}
 };
 
-MainWindow::MainWindow(QSettings& settings, QWidget* parent)
+MainWindow::MainWindow(QApplication& app, QSettings& settings, QWidget* parent)
 	: QMainWindow(parent)
 	, settings(settings)
 	, ui(std::make_unique <Ui::MainWindowClass>())
@@ -63,6 +65,19 @@ MainWindow::MainWindow(QSettings& settings, QWidget* parent)
 	, cursorCoordinates(new QLabel(this))
 {
 	ui->setupUi(this);
+
+	for (const auto& fileInfo : QDir(":/themes").entryInfoList(QDir::Files))
+	{
+		if (fileInfo.suffix().toLower() == "qss")
+		{
+			ui->menuThemes->addAction(fileInfo.completeBaseName(), this, [&app, filename=fileInfo.filePath()]{
+				QFile file(filename);
+				file.open(QIODevice::ReadOnly);
+				app.setStyleSheet(QString::fromUtf8(file.readAll()));
+					});
+		}
+	}
+	
 	connect(ui->actionEnglish, &QAction::triggered, this, &MainWindow::OnEnglishClicked);
 	connect(ui->actionRussian, &QAction::triggered, this, &MainWindow::OnRussianClicked);
 	connect(ui->actionExit, &QAction::triggered, [] { QApplication::exit(0); });

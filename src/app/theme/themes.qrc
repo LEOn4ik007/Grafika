@@ -1,0 +1,25 @@
+<RCC>
+	<qresource prefix="/themes/">
+		<file alias="Amoled.qss">Amoled.qss</file>
+		<file alias="Aqua.qss">Aqua.qss</file>
+		<file alias="black.qss">black.qss</file>
+		<file alias="carbon.qss">carbon.qss</file>
+		<file alias="coffee.qss">coffee.qss</file>
+		<file alias="ConsoleStyle.qss">ConsoleStyle.qss</file>
+		<file alias="default.qss">default.qss</file>
+		<file alias="detroit-future.qss">detroit-future.qss</file>
+		<file alias="ElegantDark.qss">ElegantDark.qss</file>
+		<file alias="evilworks.qss">evilworks.qss</file>
+		<file alias="gray.qss">gray.qss</file>
+		<file alias="MacOS.qss">MacOS.qss</file>
+		<file alias="ManjaroMix.qss">ManjaroMix.qss</file>
+		<file alias="MaterialDark.qss">MaterialDark.qss</file>
+		<file alias="MetroUI.qss">MetroUI.qss</file>
+		<file alias="NeonButtons.qss">NeonButtons.qss</file>
+		<file alias="one-dark.qss">one-dark.qss</file>
+		<file alias="sublime.qss">sublime.qss</file>
+		<file alias="Ubuntu.qss">Ubuntu.qss</file>
+		<file alias="vs-dark-hdpi.qss">vs-dark-hdpi.qss</file>
+		<file alias="vs-dark.qss">vs-dark.qss</file>
+	</qresource>
+</RCC>

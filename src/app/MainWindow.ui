@@ -54,7 +54,13 @@
      <addaction name="actionEnglish"/>
      <addaction name="actionRussian"/>
     </widget>
+    <widget class="QMenu" name="menuThemes">
+     <property name="title">
+      <string>Themes</string>
+     </property>
+    </widget>
     <addaction name="menuLanguage"/>
+    <addaction name="menuThemes"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuFunctions"/>
@@ -110,7 +116,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="MainWindow.qrc"/>
+  <include location="resources/MainWindow.qrc"/>
  </resources>
  <connections/>
 </ui>

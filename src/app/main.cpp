@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
         else
             assert(false && "Cant load translation file");
 
-        MainWindow w(settings);
+        MainWindow w(a, settings);
         w.show();
         const auto result = a.exec();
         if (result != 96)
