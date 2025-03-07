@@ -16,7 +16,6 @@
     <message>
         <location filename="../FunctionSyntaxDialog.cpp" line="17"/>
         <source>FUNCTION</source>
-        <translatorcomment>ФУНКЦИЯ</translatorcomment>
         <translation></translation>
     </message>
     <message>
